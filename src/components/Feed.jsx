@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import UserCard from './UserCard';
 
 
-const feed = () => {
+const Feed = () => {
   const feed = useSelector((store)=> store.feed);
   
   const dispatch = useDispatch();
@@ -42,4 +42,4 @@ const feed = () => {
   )
 };
 
-export default feed
+export default Feed
