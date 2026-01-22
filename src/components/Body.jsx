@@ -24,6 +24,9 @@ const Body = () => {
       if (err?.response?.status === 401) {
         navigate("/login");
       }
+
+
+      
 }
 
 
@@ -37,8 +40,9 @@ const Body = () => {
   return (
     <div>
         <NavBar/> 
-        <Footer/>
         <Outlet/>
+        <Footer/>
+        
     </div>
   )
 }

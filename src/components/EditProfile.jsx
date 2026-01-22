@@ -72,25 +72,38 @@ export const EditProfile = ({user}) => {
             />
           </fieldset>
            <fieldset className="fieldset">
-            <legend className="fieldset-legend">Gender </legend>
-            <input
-              type="text"
-              value={gender}
-              className="input"
-              placeholder="Type here"
-              onChange={(e) => setGender(e.target.value)}
-            />
-          </fieldset>
-           <fieldset className="fieldset">
-            <legend className="fieldset-legend">About </legend>
-            <input
-              type="text"
+  <legend className="fieldset-legend text-sm font-medium">
+    Gender
+  </legend>
+  <select
+    value={gender}
+    className="select select-bordered w-full focus:select-primary"
+    onChange={(e) => setGender(e.target.value)}
+  >
+    <option value="" disabled>
+      Select gender
+    </option>
+    <option value="male">male</option>
+    <option value="female">female</option>
+    <option value="others">others</option>
+    <option value="prefer not to say">prefer not to say</option>
+  </select>
+</fieldset>
+
+
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend text-sm font-medium">
+              About
+            </legend>
+            <textarea
               value={about}
-              className="input"
-              placeholder="Type here"
+              className="textarea textarea-bordered w-full resize-none focus:textarea-primary"
+              placeholder="Write something about yourself"
+              rows={3}
               onChange={(e) => setAbout(e.target.value)}
             />
-          </fieldset>
+          </fieldset> 
+
           <fieldset className="fieldset">
             <legend className="fieldset-legend">Photo URL </legend>
             <input
