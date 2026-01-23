@@ -17,6 +17,7 @@ const Feed = () => {
 
     try{
     const res = await axios.get(BASE_URL + "/feed", {withCredentials: true},);
+    console.log(res.data);
     
     dispatch (addFeed(res.data));
     }
@@ -32,6 +33,10 @@ const Feed = () => {
     getFeed();
   }, []);
 
+  if(!feed) return;
+
+  if(feed.length <= 0) return <h1 className='flex justify-center text-bold text-2xl my-30'> No new Users Found!!</h1>
+
 
   return (
     feed && (
@@ -42,4 +47,4 @@ const Feed = () => {
   )
 };
 
-export default Feed
+export default Feed;

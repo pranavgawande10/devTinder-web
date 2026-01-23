@@ -30,6 +30,8 @@
 - new page - see all my connection
 - new page - see all my connection requests 
 - feature - Accept/Reject connection Request
+- send and ignore the user card from feed
+
 
 
 
