@@ -35,16 +35,34 @@ const Feed = () => {
 
   if(!feed) return;
 
-  if(feed.length <= 0) return <h1 className='flex justify-center text-bold text-2xl my-30'> No new Users Found!!</h1>
-
-
+  if(feed.length <= 0) return (
+    <div className="min-h-screen bg-black flex flex-col items-center justify-start pt-40">
+      <h1 className="text-pink-500 font-bold text-2xl animate-pulse">
+        No User Found!!
+      </h1>
+      {/* This invisible spacer ensures the footer stays at the bottom */}
+      <div className="flex-grow"></div> 
+    </div>
+  );
   return (
     feed && (
-    <div className='flex justify-center my-10'>
-      <UserCard user = {feed[0]}/>
-    </div>
+      /* min-h-screen: Ensures the page is at least full height
+         flex flex-col: Allows us to use flex-grow to push the footer
+      */
+      <div className="min-h-screen bg-black flex flex-col items-center">
+        
+        {/* Centered content area */}
+        <div className="flex-grow flex justify-center items-center my-10 w-full">
+          <UserCard user={feed[0]} />
+        </div>
+
+        {/* If your Footer is not part of a global Layout, 
+           you can place it here. If it is global, the 
+           'flex-grow' above will push it to the bottom. 
+        */}
+      </div>
     )
-  )
+  );
 };
 
 export default Feed;
