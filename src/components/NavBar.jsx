@@ -38,7 +38,8 @@ const NavBar = () => {
           className="btn btn-ghost text-2xl font-extrabold tracking-wide
                      hover:scale-105 transition-transform duration-300"
         >
-          👨‍💻 DevTinder
+          <img src="/devTinder.png" alt="DevTinder Logo" className="w-10 h-10 mr-2" />
+    DevTinder
         </Link>
       </div>
 
