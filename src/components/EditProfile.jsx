@@ -13,12 +13,14 @@ export const EditProfile = ({user}) => {
     const [age , setAge] = useState(user.age || "");
     const [gender, setGender] = useState(user.gender || "");
     const [about, setAbout] = useState(user.about || "");
+    const [headline, setHeadline] = useState(user.headline || "");
     const [skills, setSkills] = useState(user.skills || []);
     const [photoUrl , setPhotoUrl]= useState(user.photoUrl  || "")
     const [githubUsername, setGithubUsername] = useState(user.githubUsername || "");
     const [error, setError] = useState("");
     const [showToast , setShowToast] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
+    const [isEnhancing, setIsEnhancing] = useState(false);
     const dispatch = useDispatch();
 
     const handlePhotoUpload = async (e) => {
@@ -47,7 +49,7 @@ export const EditProfile = ({user}) => {
     const saveProfile = async () =>{
         setError("");
         try{
-            const res = await  axios.patch(BASE_URL + "/profile/edit" , {firstName,lastName,age,gender,photoUrl,skills, about, githubUsername}, {withCredentials : true,});
+            const res = await  axios.patch(BASE_URL + "/profile/edit" , {firstName,lastName,age,gender,photoUrl,skills, about, githubUsername, headline}, {withCredentials : true,});
              dispatch(addUser(res?.data?.data));
              setShowToast(true);
              setTimeout(() => {
@@ -57,6 +59,26 @@ export const EditProfile = ({user}) => {
         catch(err)
         {
             setError(err.response.data);
+        }
+    }
+
+    const handleEnhanceBio = async () => {
+        if (!skills.length && !about) {
+            setError("Please add some skills or a basic about me note first so the AI has something to work with!");
+            return;
+        }
+        
+        try {
+            setIsEnhancing(true);
+            setError("");
+            const res = await axios.post(BASE_URL + "/profile/enhance-bio", { skills, about }, { withCredentials: true });
+            
+            if (res.data.headline) setHeadline(res.data.headline);
+            if (res.data.bio) setAbout(res.data.bio);
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to enhance bio");
+        } finally {
+            setIsEnhancing(false);
         }
     }
 
@@ -70,7 +92,7 @@ export const EditProfile = ({user}) => {
 
     {/* Toast Notification */}
     {showToast && (
-      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 animate-slide-up">
+      <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[9999] animate-slide-up">
         <div className="bg-secondary-accent/20 border border-secondary-accent text-white font-medium shadow-[0_0_30px_rgba(34,211,238,0.3)] rounded-2xl px-6 py-3 flex items-center gap-3 backdrop-blur-xl">
           <svg xmlns="http://www.w3.org/2000/svg" className="stroke-secondary-accent shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -92,7 +114,7 @@ export const EditProfile = ({user}) => {
          {/* Live Preview Card */}
          <div className="transform origin-top w-full flex justify-center pointer-events-none">
              {/* Note: pointer-events-none so we don't accidentally trigger actions on preview card */}
-             <UserCard user={{ _id: "preview", firstName, lastName, photoUrl, age, gender, skills, about, githubUsername }} hideActions={true} />
+             <UserCard user={{ _id: "preview", firstName, lastName, photoUrl, age, gender, skills, about, githubUsername, headline }} hideActions={true} />
          </div>
       </div>
 
@@ -237,9 +259,36 @@ export const EditProfile = ({user}) => {
                         <SkillsInput value={skills} onChange={setSkills} />
                       </div>
 
+                      {/* Headline */}
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1">Professional Headline</label>
+                        <input
+                          type="text"
+                          value={headline}
+                          onChange={(e) => setHeadline(e.target.value)}
+                          placeholder="e.g. Full Stack Developer | Open Source Contributor"
+                          className="h-12 w-full rounded-xl bg-[#070B14]/80 border border-white/10 px-4 text-white focus:border-primary-accent focus:ring-1 focus:ring-primary-accent focus:outline-none transition-all placeholder:text-gray-600 font-medium"
+                        />
+                      </div>
+
                       {/* About */}
                       <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1">About Me</label>
+                        <div className="flex items-center justify-between ml-1 mb-1">
+                          <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">About Me</label>
+                          <button
+                            type="button"
+                            onClick={handleEnhanceBio}
+                            disabled={isEnhancing}
+                            className="flex items-center gap-1.5 text-[11px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 hover:opacity-80 transition-opacity uppercase tracking-wider disabled:opacity-50"
+                          >
+                            {isEnhancing ? (
+                                <svg className="animate-spin h-3.5 w-3.5 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            ) : "✨ Enhance with AI"}
+                          </button>
+                        </div>
                         <textarea
                           value={about}
                           onChange={(e) => setAbout(e.target.value)}

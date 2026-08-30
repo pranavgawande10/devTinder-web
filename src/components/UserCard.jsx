@@ -8,7 +8,7 @@ const UserCard = ({user, hideActions = false}) => {
     const dispatch = useDispatch();
     if (!user) return null;
 
-    const {_id , firstName, lastName,photoUrl, age,gender,skills,about,githubUsername} = user;
+    const {_id , firstName, lastName,photoUrl, age,gender,skills,about,githubUsername, headline} = user;
     const handleSendRequest = async (status,userId) =>{
       try 
       {
@@ -48,6 +48,12 @@ const UserCard = ({user, hideActions = false}) => {
       <h2 className="text-3xl font-extrabold tracking-tight mb-1 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
         {firstName} {lastName}
       </h2>
+
+      {headline && (
+        <p className="text-[13px] font-semibold text-purple-300 mb-2 tracking-wide uppercase">
+          {headline}
+        </p>
+      )}
 
       {age && gender && (
         <p className="text-sm font-medium text-primary-accent mb-3">
