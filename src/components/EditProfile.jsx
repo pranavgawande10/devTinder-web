@@ -4,6 +4,7 @@ import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import SkillsInput from "./SkillsInput";
 
 
 export const EditProfile = ({user}) => {
@@ -12,11 +13,35 @@ export const EditProfile = ({user}) => {
     const [age , setAge] = useState(user.age || "");
     const [gender, setGender] = useState(user.gender || "");
     const [about, setAbout] = useState(user.about || "");
-    const [skills, setSkills] = useState(user.skills || "");
+    const [skills, setSkills] = useState(user.skills || []);
     const [photoUrl , setPhotoUrl]= useState(user.photoUrl  || "")
     const [error, setError] = useState("");
     const [showToast , setShowToast] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const dispatch = useDispatch();
+
+    const handlePhotoUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const formData = new FormData();
+        formData.append("photo", file);
+        
+        try {
+            setIsUploading(true);
+            setError("");
+            const res = await axios.post(BASE_URL + "/profile/uploadPhoto", formData, {
+                withCredentials: true,
+                headers: { "Content-Type": "multipart/form-data" }
+            });
+            setPhotoUrl(res.data.photoUrl);
+            dispatch(addUser(res.data.data));
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to upload photo");
+        } finally {
+            setIsUploading(false);
+        }
+    };
 
     const saveProfile = async () =>{
         setError("");
@@ -97,17 +122,17 @@ return (
           </div>
         </div>
 
-        {/* Photo URL */}
+        {/* Photo Upload */}
         <div className="flex flex-col gap-2">
-          <label className="text-lg font-medium ml-1">Photo URL</label>
+          <label className="text-lg font-medium ml-1">Profile Photo</label>
           <input
-            type="text"
-            value={photoUrl}
-            onChange={(e) => setPhotoUrl(e.target.value)}
-            placeholder="Profile photo URL"
-            className="h-12 px-5 w-full rounded-full bg-[#0b0b10] border border-white/10 
-                       text-lg text-white focus:border-pink-500 outline-none transition-all"
+            type="file"
+            accept="image/*"
+            onChange={handlePhotoUpload}
+            disabled={isUploading}
+            className="h-12 w-full text-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#e91e63] file:text-white hover:file:bg-[#d81b60] transition-all"
           />
+          {isUploading && <span className="text-sm text-pink-500 ml-2">Uploading...</span>}
         </div>
 
         {/* Age + Gender Row */}
@@ -123,18 +148,6 @@ return (
                          text-lg text-white focus:border-pink-500 outline-none transition-all"
             />
           </div>
-          {/* Photo URL */}
-        <div className="flex flex-col gap-2">
-          <label className="text-lg font-medium ml-1">Skills</label>
-          <input
-            type="text"
-            value={skills}
-            onChange={(e) => setSkills(e.target.value)}
-            placeholder="SkillsL"
-            className="h-12 px-5 w-full rounded-full bg-[#0b0b10] border border-white/10 
-                       text-lg text-white focus:border-pink-500 outline-none transition-all"
-          />
-        </div>
           <div className="flex flex-col gap-2">
             <label className="text-lg font-medium ml-1">Gender</label>
             <select
@@ -150,6 +163,13 @@ return (
             </select>
           </div>
         </div>
+
+        {/* Skills */}
+        <div className="flex flex-col gap-2">
+          <label className="text-lg font-medium ml-1">Skills</label>
+          <SkillsInput value={skills} onChange={setSkills} />
+        </div>
+
 
         {/* About */}
         <div className="flex flex-col gap-2">

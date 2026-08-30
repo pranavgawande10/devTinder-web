@@ -33,7 +33,7 @@ const Feed = () => {
     getFeed();
   }, []);
 
-  if(!feed) return;
+  if(!feed) return null;
 
   if(feed.length <= 0) return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-start pt-40">
