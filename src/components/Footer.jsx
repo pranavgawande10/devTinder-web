@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="footer sm:footer-horizontal bg-[#0f0f14]/80 backdrop-blur-md text-gray-400 p-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center w-full mt-auto">
+    <footer className="footer sm:footer-horizontal bg-[#0f0f14]/80 backdrop-blur-md text-gray-400 p-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center w-full">
       
       {/* Brand/Copyright Section */}
       <aside className="flex items-center gap-4">

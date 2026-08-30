@@ -15,6 +15,7 @@ export const EditProfile = ({user}) => {
     const [about, setAbout] = useState(user.about || "");
     const [skills, setSkills] = useState(user.skills || []);
     const [photoUrl , setPhotoUrl]= useState(user.photoUrl  || "")
+    const [githubUsername, setGithubUsername] = useState(user.githubUsername || "");
     const [error, setError] = useState("");
     const [showToast , setShowToast] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
@@ -46,7 +47,7 @@ export const EditProfile = ({user}) => {
     const saveProfile = async () =>{
         setError("");
         try{
-            const res = await  axios.patch(BASE_URL + "/profile/edit" , {firstName,lastName,age,gender,photoUrl,skills, about}, {withCredentials : true,});
+            const res = await  axios.patch(BASE_URL + "/profile/edit" , {firstName,lastName,age,gender,photoUrl,skills, about, githubUsername}, {withCredentials : true,});
              dispatch(addUser(res?.data?.data));
              setShowToast(true);
              setTimeout(() => {
@@ -133,6 +134,19 @@ return (
             className="h-12 w-full text-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#e91e63] file:text-white hover:file:bg-[#d81b60] transition-all"
           />
           {isUploading && <span className="text-sm text-pink-500 ml-2">Uploading...</span>}
+        </div>
+
+        {/* GitHub Username */}
+        <div className="flex flex-col gap-2">
+          <label className="text-lg font-medium ml-1">GitHub Username</label>
+          <input
+            type="text"
+            value={githubUsername}
+            onChange={(e) => setGithubUsername(e.target.value)}
+            placeholder="e.g. octocat"
+            className="h-12 px-5 rounded-full bg-[#0b0b10] border border-white/10 
+                       text-lg text-white focus:border-pink-500 outline-none transition-all"
+          />
         </div>
 
         {/* Age + Gender Row */}

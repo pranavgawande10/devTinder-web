@@ -4,6 +4,8 @@ import axios  from 'axios';
 import { addConnections } from '../utils/connectionSlice';
 import { useDispatch } from "react-redux";  
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { FaCommentDots } from 'react-icons/fa';
 
 const Connections = () => {
     const connections = useSelector((store) => store.connections);
@@ -68,7 +70,7 @@ const Connections = () => {
             />
 
             {/* Info */}
-            <div className="text-white">
+            <div className="text-white flex-1">
               <h2 className="font-bold text-xl">
                 {firstName} {lastName}
               </h2>
@@ -86,6 +88,24 @@ const Connections = () => {
               <p className="text-sm text-gray-400 mt-1 line-clamp-2">
                 {about}
               </p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-col gap-2 shrink-0">
+                <Link to={`/chat/${_id}`}>
+                    <button className="btn btn-circle btn-outline border-pink-500 text-pink-500
+                                       hover:bg-pink-500 hover:text-white hover:border-pink-500
+                                       hover:scale-110 transition-all" title="Chat">
+                        <FaCommentDots className="text-lg" />
+                    </button>
+                </Link>
+                <Link to={`/user/${_id}`}>
+                    <button className="btn btn-sm btn-outline border-gray-400 text-gray-400
+                                       hover:bg-gray-400 hover:text-black hover:border-gray-400
+                                       transition-all rounded-full" title="View Profile">
+                        Profile
+                    </button>
+                </Link>
             </div>
           </div>
         );

@@ -1,13 +1,14 @@
 import axios from 'axios';
+import { FaGithub } from 'react-icons/fa';
 import {BASE_URL} from "../utils/constants";
 import { useDispatch } from 'react-redux';
 import { removeUserFromFeed } from "../utils/feedSlice";
 
-const UserCard = ({user}) => {
+const UserCard = ({user, hideActions = false}) => {
     const dispatch = useDispatch();
     if (!user) return null;
 
-    const {_id , firstName, lastName,photoUrl, age,gender,skills,about} = user;
+    const {_id , firstName, lastName,photoUrl, age,gender,skills,about,githubUsername} = user;
     const handleSendRequest = async (status,userId) =>{
       try 
       {
@@ -59,26 +60,35 @@ const UserCard = ({user}) => {
         {about}
       </p>
 
-      {/* Actions */}
-      <div className="flex justify-center gap-6 mt-5">
-        <button
-          className="btn btn-circle btn-outline border-white text-white
-                     hover:bg-red-500 hover:border-red-500
-                     hover:scale-110 transition-all"
-          onClick={() => handleSendRequest("ignored", _id)}
-        >
-          ✖
-        </button>
+      {githubUsername && (
+        <a href={`https://github.com/${githubUsername}`} target="_blank" rel="noopener noreferrer" className="flex w-max items-center gap-1 mt-2 cursor-pointer group">
+          <FaGithub className="text-white/70 group-hover:text-white transition-colors" />
+          <span className="text-xs text-white/70 group-hover:text-white group-hover:underline transition-colors">{githubUsername}</span>
+        </a>
+      )}
 
-        <button
-          className="btn btn-circle btn-outline border-white text-white
-                     hover:bg-green-500 hover:border-green-500
-                     hover:scale-110 transition-all"
-          onClick={() => handleSendRequest("intrested", _id)}
-        >
-          ❤️
-        </button>
-      </div>
+      {/* Actions */}
+      {!hideActions && (
+        <div className="flex justify-center gap-6 mt-5">
+          <button
+            className="btn btn-circle btn-outline border-white text-white
+                       hover:bg-red-500 hover:border-red-500
+                       hover:scale-110 transition-all"
+            onClick={() => handleSendRequest("ignored", _id)}
+          >
+            ✖
+          </button>
+
+          <button
+            className="btn btn-circle btn-outline border-white text-white
+                       hover:bg-green-500 hover:border-green-500
+                       hover:scale-110 transition-all"
+            onClick={() => handleSendRequest("intrested", _id)}
+          >
+            ❤️
+          </button>
+        </div>
+      )}
     </div>
   </div>
 );
