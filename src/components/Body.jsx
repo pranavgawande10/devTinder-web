@@ -72,20 +72,26 @@ const Body = () => {
   const isChatRoute = location.pathname.includes('/chat');
 
   return (
-    <div>
+    <div className="relative min-h-screen bg-navy-950 text-white overflow-hidden flex flex-col">
+        {/* Subtle Background Elements */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-accent opacity-10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary-accent opacity-10 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div className="relative z-10 flex flex-col flex-1">
         {/* Real-time Notifications */}
         {notifications.length > 0 && (
             <div className="fixed top-20 right-4 z-[100] flex flex-col gap-3">
                 {notifications.map((notif) => (
                     <div
                         key={notif.id}
-                        className={`flex items-center gap-3 p-4 rounded-2xl shadow-2xl backdrop-blur-xl border border-white/10
+                        className={`flex items-center gap-3 p-4 rounded-2xl shadow-2xl glass-panel animate-slide-up
                             ${
                                 notif.type === "new_request"
-                                    ? "bg-pink-500/20 border-pink-500/30"
+                                    ? "border-primary-accent/30 bg-primary-accent/10"
                                     : notif.type === "new_message"
-                                    ? "bg-blue-500/20 border-blue-500/30"
-                                    : "bg-green-500/20 border-green-500/30"
+                                    ? "border-secondary-accent/30 bg-secondary-accent/10"
+                                    : "border-green-500/30 bg-green-500/10"
                             }`}
                     >
                         <img
@@ -104,8 +110,11 @@ const Body = () => {
             </div>
         )}
         <NavBar/> 
-        <Outlet/>
+        <main className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+          <Outlet/>
+        </main>
         {!isChatRoute && <Footer/>}
+        </div>
     </div>
   )
 }

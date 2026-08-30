@@ -24,24 +24,29 @@ const GitHubCard = ({ githubData }) => {
   if (!githubData || !githubData.repos || githubData.repos.length === 0) return null;
 
   return (
-    <div className="w-full mt-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+    <div className="w-full mt-4 p-5 rounded-[2rem] glass-card border border-white/5 relative overflow-hidden group">
+      {/* Decorative gradient */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-secondary-accent/10 rounded-full blur-3xl group-hover:bg-secondary-accent/20 transition-colors"></div>
+
       {/* Header */}
-      <div className="flex items-center gap-2 mb-3">
-        <FaGithub className="text-white text-xl" />
-        <h3 className="text-white font-bold text-lg">GitHub</h3>
+      <div className="flex items-center gap-3 mb-4 relative z-10">
+        <FaGithub className="text-white text-2xl" />
+        <h3 className="text-white font-extrabold text-lg tracking-wide">GitHub</h3>
         {githubData.publicRepos && (
-          <span className="text-xs text-gray-400 ml-auto">{githubData.publicRepos} repos · {githubData.followers} followers</span>
+          <span className="text-xs font-semibold text-secondary-accent ml-auto bg-secondary-accent/10 px-3 py-1 rounded-full border border-secondary-accent/20">
+            {githubData.publicRepos} repos · {githubData.followers} followers
+          </span>
         )}
       </div>
 
       {/* Language Badges */}
       {githubData.topLanguages && githubData.topLanguages.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="flex flex-wrap gap-2 mb-5 relative z-10">
           {githubData.topLanguages.map((lang) => (
             <span
               key={lang}
-              className="px-3 py-1 rounded-full text-xs font-semibold border border-white/10"
-              style={{ backgroundColor: (languageColors[lang] || '#6e7681') + '20', color: languageColors[lang] || '#8b949e' }}
+              className="px-3 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wider border border-white/5 backdrop-blur-md shadow-sm"
+              style={{ backgroundColor: (languageColors[lang] || '#6e7681') + '15', color: languageColors[lang] || '#8b949e' }}
             >
               {lang}
             </span>
@@ -50,26 +55,26 @@ const GitHubCard = ({ githubData }) => {
       )}
 
       {/* Repo Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative z-10">
         {githubData.repos.slice(0, 4).map((repo) => (
           <a
             key={repo.name}
             href={repo.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-xl bg-white/5 border border-white/5 hover:border-pink-500/30 transition-all hover:scale-[1.02] block"
+            className="p-4 rounded-xl bg-navy-800/50 border border-white/5 hover:border-secondary-accent/30 hover:bg-navy-800/80 transition-all duration-300 hover:-translate-y-1 block group/repo"
           >
-            <p className="text-sm font-semibold text-pink-400 truncate">{repo.name}</p>
-            <p className="text-xs text-gray-400 mt-1 line-clamp-2">{repo.description || 'No description'}</p>
-            <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+            <p className="text-sm font-bold text-gray-200 group-hover/repo:text-secondary-accent truncate transition-colors">{repo.name}</p>
+            <p className="text-[11px] text-gray-400 mt-1.5 line-clamp-2 leading-relaxed">{repo.description || 'No description'}</p>
+            <div className="flex items-center gap-4 mt-3 text-[11px] font-medium text-gray-500">
               {repo.language && (
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: languageColors[repo.language] || '#6e7681' }}></span>
                   {repo.language}
                 </span>
               )}
-              <span className="flex items-center gap-1"><FaStar className="text-yellow-500" /> {repo.stars}</span>
-              <span className="flex items-center gap-1"><FaCodeBranch /> {repo.forks}</span>
+              <span className="flex items-center gap-1.5"><FaStar className="text-yellow-500/70" /> {repo.stars}</span>
+              <span className="flex items-center gap-1.5"><FaCodeBranch className="text-blue-400/70" /> {repo.forks}</span>
             </div>
           </a>
         ))}

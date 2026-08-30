@@ -36,12 +36,13 @@ const Feed = () => {
   if(!feed) return null;
 
   if(feed.length <= 0) return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-start pt-40">
-      <h1 className="text-pink-500 font-bold text-2xl animate-pulse">
-        No User Found!!
-      </h1>
-      {/* This invisible spacer ensures the footer stays at the bottom */}
-      <div className="flex-grow"></div> 
+    <div className="flex flex-col items-center justify-center pt-32 pb-20 w-full animate-fade-in">
+      <div className="glass-panel p-8 rounded-3xl border-dashed border-2 border-primary-accent/20 flex flex-col items-center gap-4">
+        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-primary-accent to-secondary-accent font-bold text-3xl text-center">
+          You're all caught up!
+        </h1>
+        <p className="text-gray-400 text-sm">Check back later for more developers in your area.</p>
+      </div>
     </div>
   );
   return (
@@ -49,17 +50,12 @@ const Feed = () => {
       /* min-h-screen: Ensures the page is at least full height
          flex flex-col: Allows us to use flex-grow to push the footer
       */
-      <div className="min-h-screen bg-black flex flex-col items-center">
+      <div className="flex flex-col items-center w-full pt-16 pb-10">
         
         {/* Centered content area */}
-        <div className="flex-grow flex justify-center items-center my-10 w-full">
+        <div className="flex-grow flex justify-center items-center my-10 w-full relative perspective-[1000px]">
           <UserCard user={feed[0]} />
         </div>
-
-        {/* If your Footer is not part of a global Layout, 
-           you can place it here. If it is global, the 
-           'flex-grow' above will push it to the bottom. 
-        */}
       </div>
     )
   );

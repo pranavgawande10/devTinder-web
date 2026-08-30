@@ -48,8 +48,7 @@ const SkillsInput = ({ value = [], onChange }) => {
           setIsOpen(true);
         }}
         onFocus={() => setIsOpen(true)}
-        className="h-12 px-5 w-full rounded-full bg-[#0b0b10] border border-white/10 
-                   text-lg text-white focus:border-pink-500 outline-none transition-all"
+        className="input-premium h-12 w-full"
       />
 
       {/* Selected Skills Chips */}
@@ -58,7 +57,7 @@ const SkillsInput = ({ value = [], onChange }) => {
           {value.map((skill) => (
             <div
               key={skill}
-              className="flex items-center gap-2 bg-[#e91e63]/20 border border-[#e91e63]/50 text-pink-300 px-3 py-1.5 rounded-full text-sm font-medium animate-fade-in"
+              className="flex items-center gap-2 bg-primary-accent/10 border border-primary-accent/30 text-primary-accent px-3 py-1.5 rounded-xl text-sm font-semibold animate-fade-in shadow-[0_0_10px_rgba(124,58,237,0.1)]"
             >
               {skill}
               <button
@@ -66,7 +65,9 @@ const SkillsInput = ({ value = [], onChange }) => {
                 onClick={() => handleRemove(skill)}
                 className="hover:text-white transition-colors cursor-pointer"
               >
-                ✕
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
               </button>
             </div>
           ))}
@@ -75,15 +76,15 @@ const SkillsInput = ({ value = [], onChange }) => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute z-50 w-full mt-2 bg-[#1a1a24] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+        <div className="absolute z-50 w-full mt-2 glass-panel border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
           {/* Max height of approx 5 items (240px) with vertical scroll */}
-          <ul className="max-h-[240px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-pink-500 scrollbar-track-transparent">
+          <ul className="max-h-[240px] overflow-y-auto p-2 custom-scrollbar">
             {filteredSkills.length > 0 ? (
               filteredSkills.map((skill) => (
                 <li
                   key={skill}
                   onClick={() => handleSelect(skill)}
-                  className="px-4 py-3 cursor-pointer text-gray-300 hover:bg-[#e91e63]/20 hover:text-white rounded-xl transition-colors font-medium"
+                  className="px-4 py-3 cursor-pointer text-gray-300 hover:bg-primary-accent/20 hover:text-white rounded-xl transition-colors font-medium"
                 >
                   {skill}
                 </li>
