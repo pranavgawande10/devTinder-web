@@ -16,6 +16,21 @@ const NavBar = () => {
   const [notifications, setNotifications] = useState([]);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isActivityOpen, setIsActivityOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.activity-dropdown-container')) {
+        setIsActivityOpen(false);
+      }
+      if (!e.target.closest('.profile-dropdown-container')) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,6 +108,7 @@ const NavBar = () => {
   };
 
   const navigateToContext = (notif) => {
+      setIsActivityOpen(false);
       if (notif.type === "new_message") {
           navigate("/chat/" + notif.senderId._id);
       } else if (notif.type === "request_accepted") {
@@ -170,13 +186,15 @@ const NavBar = () => {
             {user && (
               <>
                 {/* Notification Bell */}
-                <div className="dropdown dropdown-end">
+                <div className="relative activity-dropdown-container w-10 h-10">
                   <div
-                    tabIndex={0}
                     role="button"
-                    className="relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
-                    onMouseDown={handleClearNotifications}
-                    onClick={autoCloseDropdown}
+                    className="relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                    onClick={() => {
+                        setIsActivityOpen(!isActivityOpen);
+                        setIsProfileOpen(false);
+                        handleClearNotifications();
+                    }}
                   >
                     <FaBell className="text-[17px]" />
                     {unreadCount > 0 && (
@@ -186,11 +204,11 @@ const NavBar = () => {
                     )}
                   </div>
 
+                  {isActivityOpen && (
                   <div
-                    tabIndex={0}
-                    className="dropdown-content mt-4 w-[320px] sm:w-[350px] max-h-[80vh] overflow-y-auto
-                               rounded-3xl glass-card text-white
-                               animate-slide-down flex flex-col p-4 z-50 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+                    className="absolute top-14 right-0 w-[320px] sm:w-[350px] max-h-[80vh] overflow-y-auto
+                                rounded-3xl glass-card text-white
+                                animate-slide-down flex flex-col p-4 z-50 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
                   >
                     <h3 className="font-bold text-sm tracking-widest uppercase text-gray-400 border-b border-white/10 pb-3 mb-2 flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary-accent"></span>
@@ -252,15 +270,18 @@ const NavBar = () => {
                         </ul>
                     )}
                   </div>
+                  )}
                 </div>
 
                 {/* Desktop User Avatar Dropdown */}
-                <div className="hidden md:block dropdown dropdown-end ml-1">
+                <div className="hidden md:block relative profile-dropdown-container ml-1 h-10">
                   <div
-                    tabIndex={0}
                     role="button"
                     className="flex items-center gap-3 p-1 pr-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10 transition-all cursor-pointer"
-                    onClick={autoCloseDropdown}
+                    onClick={() => {
+                        setIsProfileOpen(!isProfileOpen);
+                        setIsActivityOpen(false);
+                    }}
                   >
                     <div className="w-10 h-10 rounded-full p-[2px] bg-gradient-to-tr from-primary-accent to-secondary-accent">
                       <img alt="User" src={user.photoUrl} className="w-full h-full rounded-full object-cover border border-[#070B14]" />
@@ -271,23 +292,24 @@ const NavBar = () => {
                     </svg>
                   </div>
 
+                  {isProfileOpen && (
                   <ul
-                    tabIndex={0}
-                    className="menu dropdown-content mt-3 w-56
+                    className="menu absolute top-14 right-0 w-56
                                rounded-2xl glass-card text-gray-200 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]
-                               animate-slide-down p-2 z-50 font-medium"
+                               animate-slide-down p-2 z-50 font-medium list-none"
                   >
                     <div className="px-4 py-3 border-b border-white/10 mb-1 text-xs text-gray-400 uppercase tracking-widest font-bold">
                       Account
                     </div>
-                    <li><Link to="/profile" className="hover:bg-white/10 rounded-xl py-2.5 transition-colors focus:bg-white/10 active:bg-white/10">Profile</Link></li>
+                    <li><Link to="/profile" onClick={() => setIsProfileOpen(false)} className="block px-4 py-2 hover:bg-white/10 rounded-xl transition-colors">Profile</Link></li>
                     <div className="h-px bg-white/5 my-1 mx-2"></div>
                     <li>
-                      <a onClick={handleLogout} className="text-red-400 hover:bg-red-500/10 hover:text-red-400 rounded-xl py-2.5 transition-colors focus:bg-red-500/10 focus:text-red-400">
+                      <button onClick={() => { setIsProfileOpen(false); handleLogout(); }} className="w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-colors cursor-pointer">
                         Log out
-                      </a>
+                      </button>
                     </li>
                   </ul>
+                  )}
                 </div>
 
                 {/* Mobile Menu Button */}

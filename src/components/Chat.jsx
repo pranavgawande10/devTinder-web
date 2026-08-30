@@ -4,7 +4,9 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 import { getSocket } from '../utils/socket';
-import { FaPaperPlane, FaArrowLeft } from 'react-icons/fa';
+import { FaPaperPlane, FaArrowLeft, FaRobot } from 'react-icons/fa';
+import AIAssistant from './AIAssistant';
+
 
 const Chat = () => {
     const { targetUserId } = useParams();
@@ -15,7 +17,9 @@ const Chat = () => {
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef(null);
     const typingTimeoutRef = useRef(null);
+    const [showAIAssistant, setShowAIAssistant] = useState(false);
     const navigate = useNavigate();
+
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -97,10 +101,13 @@ const Chat = () => {
     };
 
     return (
-        <div className="flex-1 w-full flex items-center justify-center pt-20 pb-10 px-4 animate-fade-in relative z-10">
+        <div className="flex-1 w-full flex items-center justify-center pt-28 pb-10 px-4 animate-fade-in relative z-10">
 
             {/* Chat Box Container */}
-            <div className="w-full max-w-3xl h-[80vh] flex flex-col glass-card rounded-3xl overflow-hidden shadow-2xl">
+            <div className="w-full max-w-5xl h-[80vh] flex glass-card rounded-3xl overflow-hidden shadow-2xl relative">
+                
+                {/* Main Chat Area */}
+                <div className={`flex flex-col h-full transition-all duration-300 ${showAIAssistant ? 'hidden md:flex md:w-[60%] border-r border-white/10 shrink-0' : 'w-full'}`}>
                 
                 {/* Chat Header */}
                 <div className="bg-navy-900/60 backdrop-blur-md border-b border-white/10 px-6 py-4 flex items-center gap-4 shrink-0">
@@ -110,13 +117,31 @@ const Chat = () => {
                     >
                         <FaArrowLeft className="text-lg" />
                     </button>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col flex-1">
                         <h2 className="text-white font-bold text-lg tracking-wide">Chat</h2>
                         {isTyping && (
                             <span className="text-secondary-accent text-xs animate-pulse font-medium">typing...</span>
                         )}
                     </div>
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setShowAIAssistant(!showAIAssistant);
+                        }}
+                        className={`btn btn-sm border-0 rounded-xl transition-all ${
+                            showAIAssistant 
+                                ? 'bg-primary-accent text-white shadow-[0_0_15px_rgba(255,107,107,0.4)]' 
+                                : 'bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white'
+                        }`}
+                    >
+                        <FaRobot className="text-lg" />
+                        <span className="hidden sm:inline ml-1 font-medium">DevSpark AI ✨</span>
+                    </button>
+
                 </div>
+
 
                 {/* Messages Area */}
                 <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
@@ -177,8 +202,19 @@ const Chat = () => {
                         </button>
                     </div>
                 </div>
+                </div>
+                
+                {/* AI Assistant Side Panel */}
+                <div className={`h-full transition-all duration-300 overflow-hidden ${
+                    showAIAssistant ? 'w-full md:w-[40%] opacity-100 translate-x-0 shrink-0' : 'w-0 opacity-0 translate-x-10 absolute right-0'
+                }`}>
+                    {showAIAssistant && (
+                        <AIAssistant onClose={() => setShowAIAssistant(false)} />
+                    )}
+                </div>
             </div>
         </div>
+
     );
 };
 
