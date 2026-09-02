@@ -1,6 +1,8 @@
 # 🚀 DevTinder — Where Code Meets Its Match (Frontend)
 
-Welcome to the frontend repository for **DevTinder**! This repository houses the highly responsive, interactive React application that serves as the user-facing side of the platform.
+> ⚠️ **Looking for the Backend?** This repository contains the React.js Frontend UI. The Node.js Backend API that powers this application can be found here: [👉 DevTinder Backend Repository](https://github.com/pranavgawande10/devTinder)
+
+Welcome to the frontend repository for **DevTinder**! This is a highly responsive, interactive React application that serves as the user-facing side of the platform, enabling developers to discover, connect, and collaborate seamlessly.
 
 ## 🛠️ Tech Stack
 
@@ -14,31 +16,29 @@ Welcome to the frontend repository for **DevTinder**! This repository houses the
 ## ✨ Detailed Feature Breakdown
 
 ### 1. ⚡ Global State Management Architecture
-To handle complex data flows without "prop drilling," the application relies heavily on **Redux Toolkit**.
-*   **User Slice:** Manages the authentication state globally. Determines if a user is logged in, stores their data, and conditionally renders protected routes (like the Feed and Chat).
+To handle complex data flows efficiently, the application relies on **Redux Toolkit**.
+*   **User Slice:** Manages authentication state globally, storing user data and conditionally rendering protected routes.
 *   **Feed Slice:** Caches the array of potential developer matches. As a user swipes, the top card is popped off the Redux store instantly, creating a zero-latency UI experience.
-*   **Connection Slice:** Manages the lists of pending requests and accepted connections, updating badges and UI states dynamically.
+*   **Connection Slice:** Manages pending requests and accepted connections, updating UI badges dynamically.
 
 ### 2. 🃏 Dynamic Swipe Interface
 The core discovery mechanic is built to be intuitive and engaging.
-*   Developers are presented in a card-based layout.
+*   Developers are presented in a sleek, card-based layout.
 *   Action buttons (Ignore / Interested) trigger API calls to the backend while simultaneously updating the Redux store to transition to the next profile seamlessly.
-*   The UI handles edge cases gracefully, such as displaying a "No more developers found" fallback when the feed is exhausted.
 
 ### 3. 💬 Real-Time Chat UI
 A dedicated chat interface that unlocks only for mutually connected developers.
 *   Utilizes `socket.io-client` to maintain an active connection with the backend.
-*   Features optimistic UI updates: when a user sends a message, it appears instantly on their screen while transmitting to the server.
-*   Includes "typing" indicators and online status markers to make the collaboration experience feel alive.
+*   Features optimistic UI updates: messages appear instantly on-screen while transmitting to the server.
 
 ### 4. ✨ DevSpark AI Integration
 A seamless UI wrapper around the backend's Gemini AI functionality.
 *   Within the "Edit Profile" section, users can click an "Enhance with AI" button.
-*   The frontend gathers their currently inputted skills and notes, triggers the AI route, and injects the beautifully rewritten professional bio and headline directly back into the input fields, ready to be saved.
+*   The frontend triggers the AI route and injects a beautifully rewritten professional bio and headline directly back into the input fields, ready to be saved.
 
 ### 5. 📱 Responsive & Component-Driven Design
-*   Built entirely with **Tailwind CSS**, ensuring that the application looks flawless on mobile devices, tablets, and massive desktop monitors.
-*   The codebase follows a strict component-driven architecture. UI elements like buttons, input fields, navigation bars, and user cards are decoupled and highly reusable, maintaining a clean and scalable React tree.
+*   Built entirely with **Tailwind CSS**, ensuring that the application looks flawless on mobile devices, tablets, and desktop monitors.
+*   The codebase follows a strict component-driven architecture. UI elements like buttons, input fields, navigation bars, and user cards are decoupled and highly reusable.
 
 ---
 *Built with ❤️ by Pranav Gawande*
