@@ -1,8 +1,8 @@
-# 🚀 DevTinder — Where Code Meets Its Match (Frontend)
+# 🚀 DevTinder — Client UI Service (Frontend)
 
-> ⚠️ **Looking for the Backend?** This repository contains the React.js Frontend UI. The Node.js Backend API that powers this application can be found here: [👉 DevTinder Backend Repository](https://github.com/pranavgawande10/devTinder)
+> ⚠️ **Microservices Architecture:** This repository contains the independent React.js Frontend UI service. The decoupled Node.js Backend API service that powers this application can be found here: [👉 DevTinder Backend Repository](https://github.com/pranavgawande10/devTinder)
 
-Welcome to the frontend repository for **DevTinder**! This is a highly responsive, interactive React application that serves as the user-facing side of the platform, enabling developers to discover, connect, and collaborate seamlessly.
+Welcome to the frontend client for **DevTinder**! Designed in a **microservices-oriented architecture**, this highly responsive React application acts as an independent presentation layer. It communicates with the backend APIs via REST and WebSockets to deliver a seamless developer networking experience.
 
 ## 🛠️ Tech Stack
 
@@ -16,7 +16,7 @@ Welcome to the frontend repository for **DevTinder**! This is a highly responsiv
 ## ✨ Detailed Feature Breakdown
 
 ### 1. ⚡ Global State Management Architecture
-To handle complex data flows efficiently, the application relies on **Redux Toolkit**.
+To handle complex data flows asynchronously from the backend, the application relies on **Redux Toolkit**.
 *   **User Slice:** Manages authentication state globally, storing user data and conditionally rendering protected routes.
 *   **Feed Slice:** Caches the array of potential developer matches. As a user swipes, the top card is popped off the Redux store instantly, creating a zero-latency UI experience.
 *   **Connection Slice:** Manages pending requests and accepted connections, updating UI badges dynamically.
@@ -24,21 +24,21 @@ To handle complex data flows efficiently, the application relies on **Redux Tool
 ### 2. 🃏 Dynamic Swipe Interface
 The core discovery mechanic is built to be intuitive and engaging.
 *   Developers are presented in a sleek, card-based layout.
-*   Action buttons (Ignore / Interested) trigger API calls to the backend while simultaneously updating the Redux store to transition to the next profile seamlessly.
+*   Action buttons (Ignore / Interested) trigger API calls to the backend service while simultaneously updating the local Redux store.
 
 ### 3. 💬 Real-Time Chat UI
 A dedicated chat interface that unlocks only for mutually connected developers.
-*   Utilizes `socket.io-client` to maintain an active connection with the backend.
+*   Utilizes `socket.io-client` to maintain an active WebSocket connection with the backend chat service.
 *   Features optimistic UI updates: messages appear instantly on-screen while transmitting to the server.
 
 ### 4. ✨ DevSpark AI Integration
-A seamless UI wrapper around the backend's Gemini AI functionality.
+A seamless UI wrapper around the backend's Gemini AI service.
 *   Within the "Edit Profile" section, users can click an "Enhance with AI" button.
-*   The frontend triggers the AI route and injects a beautifully rewritten professional bio and headline directly back into the input fields, ready to be saved.
+*   The frontend triggers the AI route and injects a beautifully rewritten professional bio and headline directly back into the input fields.
 
 ### 5. 📱 Responsive & Component-Driven Design
 *   Built entirely with **Tailwind CSS**, ensuring that the application looks flawless on mobile devices, tablets, and desktop monitors.
-*   The codebase follows a strict component-driven architecture. UI elements like buttons, input fields, navigation bars, and user cards are decoupled and highly reusable.
+*   The codebase follows a strict component-driven architecture, keeping UI elements decoupled and highly reusable.
 
 ---
 *Built with ❤️ by Pranav Gawande*
